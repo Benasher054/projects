@@ -11,7 +11,8 @@ def when_not_(pointer):#בודק שאין מקף תחתון
 def clean_pattern():  #מנקה את התבנית
     global pattern
     pattern = [['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
-
+    print("it's a draw")
+    print("let's try again")
 
 def print_board():
     """
@@ -61,5 +62,8 @@ while True:
         print(pattern[0][2] + ' is the winner!!')
         break
     #  בדיקה של כל התאים אם הם כולם שונים ממקף תחתון ואין מנצח ירוקן את התבנית ויריץ את המשחק מהתחלה
-    if when_not_(pattern[0][0]) and when_not_(pattern[0][1]) and when_not_(pattern[0][2]) and when_not_(pattern[1][0]) and when_not_(pattern[1][1]) and when_not_(pattern[1][2]) and when_not_(pattern[2][0]) and when_not_(pattern[2][1]) and when_not_(pattern[2][2]):
+    if when_not_(pattern[0][0]) and when_not_(pattern[0][1])\
+         and when_not_(pattern[0][2]) and when_not_(pattern[1][0]) \
+         and when_not_(pattern[1][1]) and when_not_(pattern[1][2]) and when_not_(pattern[2][0]) \
+         and when_not_(pattern[2][1]) and when_not_(pattern[2][2]):
         clean_pattern()

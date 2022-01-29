@@ -1,0 +1,60 @@
+import random
+
+path = r'C:\Users\Benas\Desktop\file2.txt'
+countMove = 0
+
+
+def isTreasure(tell):
+    """
+בודק האם המצביע פגע באוצר או לא
+    :param tell: מקבל את מיקום המצביע
+    :return: אמת אם פגע באוצר שקר אם לא
+    """
+    if tell == 'T' or tell == 'R' or tell == 'E' or tell == 'A' or tell == 'S' or tell == 'U':
+        return True
+    return False
+
+
+def findFileTell():
+    """
+    הפונקציה בודקת את אורך התווים שיש בקובץ
+    :return: מספר התווים שיש סך הכל בקובץ
+    """
+    with open(path, 'r') as file2:
+        file2.read()
+        t = file2.tell()
+        file2.seek(0)
+        return t
+
+
+with open(path, 'w+') as file1:              # פתיחת הקובץ לכתיבה
+    for i in range(0, 10):
+        file1.write((str(i) * random.randint(1, 20)))
+    file1.write("TREASURE")
+    for i in range(9, -1, -1):
+        file1.write((str(i) * random.randint(1, 20)))
+
+with open(path, 'r') as file1:
+    while True:
+        move = int(input("Where you want to move? [1- forward 2-backwards] "))
+        moveSeek = int(input("How many characters? "))
+        if move == 1:
+            if moveSeek > findFileTell()-1:    # בדיקה האם המשתמש הכניס מיקום שגדול יותר ממספר התווים בדף
+                print('you forward more Characters then you have in file, this turn is count. please enter again')
+                countMove += 1               # הוספה לכמות הניסיונות אחד בכל ניסיון
+                continue                     # אם כן תמשיך הלאה עד שיכניס קלט נכון
+            file1.seek(file1.tell() + moveSeek)
+        if move == 2:
+            if file1.tell() - moveSeek < 0:
+                print('you backward over 0, this turn is count. please enter again')
+                countMove += 1                # הוספה לכמות הניסיונות אחד בכל ניסיון
+                continue
+            file1.seek(file1.tell() - moveSeek)
+        print('You hit in ' + file1.read(1))  # מדפיס רק את התא הראשון במקום של המצביע
+        countMove += 1                        # הוספה לכמות הניסיונות אחד בכל ניסיון
+        if isTreasure(file1.read(1)):         # בדיקה באמצעות הפונקציה האם התו במיקום של המצביע עומד על TREASURE
+            print('you win in :' + str(countMove) + ' Attempts')
+            break
+        moveSeek = file1.tell() - 1           # מוריד צעד אחד למצביע כי הוא מתקדם צעד כשהוא קורא
+        file1.seek(moveSeek)                  # מזיז את המצביע לנקודה שהיה בה לפני שקרא את האות שפגע בו כי הוא מתקדם 1
+        print('… again … until hit one of the “TREASURE” letters…')
